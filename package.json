@@ -4,8 +4,8 @@
   "description": "vue-template",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack-dev-server --config ./build/webpack.conf.dev.js",
-    "build": "webpack --config ./build/webpack.conf.dev.js",
+    "dev": "webpack-dev-server --config ./build/webpack.dev.conf.js",
+    "build": "webpack --config ./build/webpack.dev.conf.js",
     "lint-fix": "eslint --fix --ext .js,.jsx,vue ./src",
     "commit": "git add . && git commit -m 'commit' && git push"
   },
@@ -19,6 +19,7 @@
     "clipboard": "^2.0.4",
     "element-ui": "^2.9.1",
     "github-markdown-css": "^3.0.1",
+    "juice": "^5.2.0",
     "marked": "^0.6.2",
     "normalize.css": "^8.0.1",
     "prismjs": "^1.16.0",
