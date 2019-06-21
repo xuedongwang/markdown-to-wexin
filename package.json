@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack-dev-server --config ./build/webpack.dev.conf.js",
-    "build": "webpack --config ./build/webpack.dev.conf.js",
+    "build": "webpack --config ./build/webpack.prod.conf.js",
     "lint-fix": "eslint --fix --ext .js,.jsx,vue ./src",
     "commit": "git add . && git commit -m 'commit' && git push"
   },
