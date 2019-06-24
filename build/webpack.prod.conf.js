@@ -110,7 +110,7 @@ const devWebpackConfig = {
     new VueLoaderPlugin(),
     new CleanPlugin([`./../${targetDir}/*`], { allowExternal: true }),
     new HTMLPlugin({
-      template: './index.html'
+      template: './index.html',
     }),
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
