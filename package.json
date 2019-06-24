@@ -7,7 +7,7 @@
     "dev": "webpack-dev-server --config ./build/webpack.dev.conf.js",
     "build": "webpack --config ./build/webpack.prod.conf.js",
     "lint-fix": "eslint --fix --ext .js,.jsx,vue ./src",
-    "commit": "git add . && git commit -m 'commit' && git push"
+    "commit": "git pull && git add . && git commit -m 'auto commit' && git push"
   },
   "keywords": [],
   "author": "wangxd",
