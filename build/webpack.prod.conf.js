@@ -10,7 +10,7 @@ const devWebpackConfig = {
   mode: 'development',
   entry: './src/main.js',
   output: {
-    publicPath: '/',
+    publicPath: '.',
     path: path.join(__dirname, '..', `${targetDir}`),
     filename: 'js/[name].[chunkhash:6].js',
     chunkFilename: 'js/[name].[chunkhash:6].js' // 代码拆分后的文件名
