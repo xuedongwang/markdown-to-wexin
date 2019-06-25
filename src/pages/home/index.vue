@@ -97,8 +97,34 @@ export default {
   },
   mounted () {
     this.initClipboard();
+    // this.initEvent();
   },
   methods: {
+    initEvent () {
+      const _this = this;
+      document.addEventListener('paste', function (event) {
+        var items = event.clipboardData && event.clipboardData.items;
+        var file = null;
+        if (items && items.length) {
+          // 检索剪切板items
+          for (var i = 0; i < items.length; i++) {
+            if (items[i].type.indexOf('image') !== -1) {
+              file = items[i].getAsFile();
+              break;
+            }
+          }
+        }
+        // 此时file就是剪切板中的图片文件
+        /* eslint-disable */
+        var reader = new FileReader();
+        reader.onload = (event) => {
+          _this.markdownInputValue += `asdasd`;
+          console.log('_this.markdownInputValue', _this.markdownInputValue);
+          document.body.innerHTML += '<img src="' + event.target.result + '" class="upload-image">';
+        };
+        reader.readAsDataURL(file);
+      });
+    },
     handleCopy () {
       if (!this.markdownInputValue.trim().length) {
         this.$message({
@@ -158,7 +184,7 @@ export default {
       font-size: 15px;
     }
     pre {
-      font-size: 13px;
+      font-size: 14px;
     }
     h1,
     h2,
