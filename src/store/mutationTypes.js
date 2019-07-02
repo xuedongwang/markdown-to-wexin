@@ -1,1 +1,0 @@
-export const SET_AUTHOR_NAME = 'SET_AUTHOR_NAME';

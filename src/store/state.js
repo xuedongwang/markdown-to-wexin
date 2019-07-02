@@ -1,5 +1,6 @@
 const state = {
-  author: 'XueDong Wang'
+  userStyleConfig: {},
+  currentArticle: ''
 };
 
 export default state;

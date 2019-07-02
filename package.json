@@ -24,6 +24,7 @@
     "normalize.css": "^8.0.1",
     "prismjs": "^1.16.0",
     "vue": "^2.5.21",
+    "vue-drawer-component": "^1.0.1",
     "vue-router": "^3.0.2",
     "vuex": "^3.0.1",
     "vuex-persistedstate": "^2.5.4"

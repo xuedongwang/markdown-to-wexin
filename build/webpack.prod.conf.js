@@ -12,8 +12,8 @@ const devWebpackConfig = {
   output: {
     publicPath: '',
     path: path.join(__dirname, '..', `${targetDir}`),
-    filename: 'js/[name].[chunkhash:6].js',
-    chunkFilename: 'js/[name].[chunkhash:6].js' // 代码拆分后的文件名
+    filename: 'js/[name].[contentHash:6].js',
+    chunkFilename: 'js/[name].[contentHash:6].js' // 代码拆分后的文件名
   },
   resolve: {
     alias: {
@@ -116,7 +116,7 @@ const devWebpackConfig = {
       // Options similar to the same options in webpackOptions.output
       // both options are optional
       filename: '[name].css',
-      chunkFilename: 'css/[name].[hash].css',
+      chunkFilename: 'css/[name].[contentHash].css',
     })
   ]
 };

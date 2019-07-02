@@ -34,6 +34,7 @@
             <div class="part-name">preview</div>
             <div class="control">
               <el-button type="primary" size="small" class="copy-btn" data-clipboard-action="cut" data-clipboard-target="#preview" @click="handleCopy">复制</el-button>
+              <el-button type="primary" size="small" @click="handleOpenDrawer">设置样式</el-button>
               <!-- <el-button type="primary" size="small" @click="handleCopy">复制1</el-button> -->
             </div>
           </div>
@@ -46,6 +47,134 @@
     <!-- <footer class="footer">
       footer
     </footer> -->
+    <vue-drawer :visible.sync="visible" placement="left" width="500px">
+      <div slot="header">
+        <div class="title">编辑样式</div>
+      </div>
+      <div slot="body">
+        <div class="row">
+          <h2 class="title">标题</h2>
+          <div class="item">
+            <div class="label">颜色</div>
+            <div class="value">
+              <el-color-picker v-model="config.title.color" size="small"></el-color-picker>
+            </div>
+          </div>
+          <div class="item">
+            <div class="label">字体大小</div>
+            <div class="value">
+              <el-slider
+                v-model="config.title.fontSize"
+                :min="10"
+                :max="40"
+                :step="1"
+                show-stops>
+              </el-slider>
+            </div>
+          </div>
+          <div class="item">
+            <div class="label">行高</div>
+            <div class="value">
+              <el-slider
+                v-model="config.title.lineHeight"
+                :min="1"
+                :max="4"
+                :step="0.01"
+                show-stops>
+              </el-slider>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <h2 class="title">文本</h2>
+          <div class="item">
+            <div class="label">颜色</div>
+            <div class="value">
+              <el-color-picker v-model="config.paragraph.color" size="small"></el-color-picker>
+            </div>
+          </div>
+          <div class="item">
+            <div class="label">字体大小</div>
+            <div class="value">
+              <el-slider
+                v-model="config.paragraph.fontSize"
+                :min="10"
+                :max="40"
+                :step="1"
+                show-stops>
+              </el-slider>
+            </div>
+          </div>
+          <div class="item">
+            <div class="label">行高</div>
+            <div class="value">
+              <el-slider
+                v-model="config.paragraph.lineHeight"
+                :min="1"
+                :max="4"
+                :step="0.01"
+                show-stops>
+              </el-slider>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <h2 class="title">链接</h2>
+          <div class="item">
+            <div class="label">颜色</div>
+            <div class="value">
+              <el-color-picker v-model="config.link.color" size="small"></el-color-picker>
+            </div>
+          </div>
+          <div class="item">
+            <div class="label">字体大小</div>
+            <div class="value">
+              <el-slider
+                v-model="config.link.fontSize"
+                :min="10"
+                :max="40"
+                :step="1"
+                show-stops>
+              </el-slider>
+            </div>
+          </div>
+          <div class="item">
+            <div class="label">行高</div>
+            <div class="value">
+              <el-slider
+                v-model="config.link.lineHeight"
+                :min="1"
+                :max="4"
+                :step="0.01"
+                show-stops>
+              </el-slider>
+            </div>
+          </div>
+        </div>
+
+        <div class="control">
+          <el-button type="primary" size="small" @click="handleResetDefaultStyle">恢复默认</el-button>
+        </div>
+
+        <!-- <div class="row">
+          <h2 class="title">代码主题</h2>
+          <div class="item">
+            <div class="value">
+              <el-select v-model="config.codeStyle" placeholder="请选择">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </div>
+          </div>
+        </div> -->
+      </div>
+    </vue-drawer>
   </div>
 </template>
 <script>
@@ -56,6 +185,25 @@ import Clipboard from 'clipboard';
 import Prism from '@/libs/prismjs';
 import '@/libs/github-markdown-css';
 import '@/libs/prismjs/themes/prism-solarizedlight.css';
+
+const defaultStyleConfig = {
+  title: {
+    color: '#00CA9D',
+    fontSize: 18,
+    lineHeight: 1.25
+  },
+  paragraph: {
+    color: '#24292e',
+    fontSize: 15,
+    lineHeight: 1.5
+  },
+  link: {
+    color: '#0366d6',
+    fontSize: 15,
+    lineHeight: 1.5
+  },
+  codeStyle: 'solarizedlight'
+};
 
 marked.setOptions({
   baseUrl: null,
@@ -84,22 +232,79 @@ export default {
   data () {
     return {
       docTitle: '',
-      markdownInputValue: ''
+      markdownInputValue: '',
+      visible: false,
+      config: {
+        title: {
+          color: '#00CA9D',
+          fontSize: 18,
+          lineHeight: 1.25
+        },
+        paragraph: {
+          color: '#24292e',
+          fontSize: 15,
+          lineHeight: 1.5
+        },
+        link: {
+          color: '#0366d6',
+          fontSize: 15,
+          lineHeight: 1.5
+        },
+        codeStyle: 'solarizedlight'
+      },
+      options: [{
+        value: 'coy',
+        label: 'coy'
+      }, {
+        value: 'dark',
+        label: 'dark'
+      }, {
+        value: 'funky',
+        label: 'funky'
+      }, {
+        value: 'okaidia',
+        label: 'okaidia'
+      }, {
+        value: 'solarizedlight',
+        label: 'solarizedlight'
+      }, {
+        value: 'twilight',
+        label: 'twilight'
+      }, {
+        value: 'tomorrow',
+        label: 'tomorrow'
+      }, {
+        value: 'default',
+        label: 'default'
+      }]
     };
   },
   computed: {
     marked () {
       return marked(this.markdownInputValue);
-    },
-    lineCount () {
-      return this.markdownInputValue.split(/\n/).length
     }
   },
   mounted () {
+    this.init();
     this.initClipboard();
-    // this.initEvent();
   },
   methods: {
+    handleResetDefaultStyle () {
+      this.config = defaultStyleConfig;
+    },
+    handleOpenDrawer () {
+      this.visible = true;
+    },
+    init () {
+      const currentArticle = localStorage.getItem('currentArticle');
+      const config = localStorage.getItem('userStyleConfig');
+      if (currentArticle) {
+        this.markdownInputValue = currentArticle;
+      }
+      if (config) {
+        this.config = JSON.parse(config);
+      }
+    },
     initEvent () {
       const _this = this;
       document.addEventListener('paste', function (event) {
@@ -119,7 +324,6 @@ export default {
         var reader = new FileReader();
         reader.onload = (event) => {
           _this.markdownInputValue += `asdasd`;
-          console.log('_this.markdownInputValue', _this.markdownInputValue);
           document.body.innerHTML += '<img src="' + event.target.result + '" class="upload-image">';
         };
         reader.readAsDataURL(file);
@@ -152,18 +356,63 @@ export default {
     // },
     initClipboard () {
       const clipboard = new Clipboard('.copy-btn');
-      console.dir(clipboard);
       clipboard.on('success', () => {
         console.log('document.getSelection()', document.getSelection());
       });
       clipboard.on('error', (e) => {
         console.error('Action:', e.action);
-        console.error('Trigger:', e.trigger);
       });
+    },
+    saveCurrentArticle (article) {
+      localStorage.setItem('currentArticle', article);
+      this.$store.commit('SAVE_CURRENT_ARTICLE', article);
+    },
+    setConfig (config) {
+      localStorage.setItem('userStyleConfig', JSON.stringify(config));
+      this.$store.commit('SAVE_STYLE_CONFIG', this.config);
+    },
+    setStyle (styleConfig) {
+      const titleStyleEl = document.createElement('style');
+      titleStyleEl.id = 'title-style';
+      titleStyleEl.type = 'text/css'; 
+      const titleStyle = `
+        #preview [id^="header-"] {
+          color: ${styleConfig.title.color};
+          font-size: ${styleConfig.title.fontSize}px;
+          line-height: ${styleConfig.title.lineHeight};
+        }
+        #preview p {
+          color: ${styleConfig.paragraph.color};
+          font-size: ${styleConfig.paragraph.fontSize}px;
+          line-height: ${styleConfig.paragraph.lineHeight};
+        }
+        #preview a {
+          color: ${styleConfig.link.color};
+          font-size: ${styleConfig.link.fontSize}px;
+          line-height: ${styleConfig.link.lineHeight};
+        }
+      `;
+      // titleStyleEl.innerHTML += titleStyle;
+      const textNode = document.createTextNode(titleStyle);
+      titleStyleEl.appendChild(textNode); 
+      document.head.appendChild(titleStyleEl);
     }
   },
   components: {
     PageHeader
+  },
+  watch: {
+    markdownInputValue (newValue) {
+      // localStorage.setItem('currentArticle', newValue);
+      this.saveCurrentArticle(newValue);
+    },
+    config: {
+      handler (newValue) {
+        this.setStyle(newValue);
+        this.setConfig(newValue);
+      },
+      deep: true
+    }
   }
 };
 </script>

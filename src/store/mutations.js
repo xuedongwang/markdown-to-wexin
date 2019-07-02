@@ -1,7 +1,10 @@
-import { SET_AUTHOR_NAME } from './mutationTypes';
+import { SAVE_CURRENT_ARTICLE, SAVE_STYLE_CONFIG } from './mutation-types';
 const mutations = {
-  [SET_AUTHOR_NAME] (state, payload) {
-    state.author = payload;
+  [SAVE_STYLE_CONFIG] (state, payload) {
+    state.userStyleConfig = payload.userStyleConfig;
+  },
+  [SAVE_CURRENT_ARTICLE] (state, payload) {
+    state.currentArticle = payload;
   }
 };
 

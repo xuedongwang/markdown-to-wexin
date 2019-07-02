@@ -7,7 +7,10 @@ import filters from '@/common/filters';
 import http from './utils/fetch';
 import './assets/scss/main.scss';
 import 'element-ui/lib/theme-chalk/index.css';
+import VueDrawer from 'vue-drawer-component';
+import 'vue-drawer-component/src/index.css';
 
+Vue.component(VueDrawer.name, VueDrawer);
 Vue.use(ElementUI);
 Vue.use(filters);
 Vue.use(http);
