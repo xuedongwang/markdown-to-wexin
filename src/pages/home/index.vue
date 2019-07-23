@@ -422,6 +422,7 @@ export default {
   min-width: 200px;
   max-width: 980px;
   margin: 0 auto;
+  font: 300 1em/1.8 'PingFang SC', 'Lantinghei SC', 'Microsoft Yahei', 'Hiragino Sans GB', 'Microsoft Sans Serif', 'WenQuanYi Micro Hei', 'sans';
   @media (max-width: 767px) {
     .markdown-body {
       padding: 15px;
@@ -450,6 +451,10 @@ export default {
         /* color: #c7254e;
         background-color: #f9f2f4; */
       }
+    }
+    p {
+      /* word-break: break-all; */
+      color: #4a4a4a;
     }
   }
 }
