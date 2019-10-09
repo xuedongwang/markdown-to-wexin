@@ -1,16 +1,6 @@
 <template>
   <div class="container">
     <page-header/>
-    <!-- Article Info display start  -->
-    <!-- <el-row>
-      <el-col :span="24">
-        <div class="doc-title-wrapper">
-          <div class="lebel">Document Name</div>
-          <el-input v-model="docTitle" class="doc-title" placeholder=""></el-input>
-        </div>
-      </el-col>
-    </el-row> -->
-    <!-- Article Info display end  -->
     <main class="main">
       <div class="editor-wrapper">
         <div class="markdown-editor">
@@ -18,10 +8,8 @@
             <div class="part-name">markdown</div>
           </div>
           <div class="editor-body">
-            <!-- <div class="row-number">
-              <div class="num" v-for="n of lineCount" :key="n">{{n}}</div>
-            </div> -->
             <el-input
+              ref="input"
               class="markdown-input"
               type="textarea"
               placeholder="请输入内容"
@@ -35,7 +23,6 @@
             <div class="control">
               <el-button type="primary" size="small" class="copy-btn" data-clipboard-action="cut" data-clipboard-target="#preview" @click="handleCopy">复制</el-button>
               <el-button type="primary" size="small" @click="handleOpenDrawer">设置样式</el-button>
-              <!-- <el-button type="primary" size="small" @click="handleCopy">复制1</el-button> -->
             </div>
           </div>
           <div class="preview-body" id="preview-body">
@@ -44,9 +31,6 @@
         </div>
       </div>
     </main>
-    <!-- <footer class="footer">
-      footer
-    </footer> -->
     <vue-drawer :visible.sync="visible" placement="left" width="500px">
       <div slot="header">
         <div class="title">编辑样式</div>
@@ -157,22 +141,6 @@
         <div class="control">
           <el-button type="primary" size="small" @click="handleResetDefaultStyle">恢复默认</el-button>
         </div>
-
-        <!-- <div class="row">
-          <h2 class="title">代码主题</h2>
-          <div class="item">
-            <div class="value">
-              <el-select v-model="config.codeStyle" placeholder="请选择">
-                <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </div>
-          </div>
-        </div> -->
       </div>
     </vue-drawer>
   </div>
@@ -231,6 +199,7 @@ export default {
   name: 'Home',
   data () {
     return {
+      picIndex: 0,
       docTitle: '',
       markdownInputValue: '',
       visible: false,
@@ -286,9 +255,32 @@ export default {
   },
   mounted () {
     this.init();
+    this.initCopy();
     this.initClipboard();
   },
   methods: {
+    initCopy () {
+      const self = this;
+      document.addEventListener('paste', function (event) {
+        var items = event.clipboardData && event.clipboardData.items;
+        var file = null;
+        if (items && items.length) {
+          // 检索剪切板items
+          for (var i = 0; i < items.length; i++) {
+            if (items[i].type.indexOf('image') !== -1) {
+              file = items[i].getAsFile();
+              var reader = new FileReader()
+              reader.onload = function(event) {
+                self.picIndex ++;
+                console.log(`%c [pic${self.picIndex}]:${event.target.result}`, "color: skyblue;");
+              }
+              reader.readAsDataURL(file);
+              break;
+            }
+          }
+        }
+      });
+    },
     handleResetDefaultStyle () {
       this.config = defaultStyleConfig;
     },
@@ -342,18 +334,6 @@ export default {
         message: '复制区域已选择，请使用 Ctrl + C 进行复制'
       });
     },
-    // handleCopy () {
-    //   const previewEl = document.getElementById('preview-body');
-    //   const basicStyle = element.innerText;
-    //   const result = juice.inlineContent(
-    //     previewEl.innerHTML,
-    //     basicStyle,
-    //     {
-    //       inlinePseudoElements: true
-    //     }
-    //   );
-    //   console.log('result', element.innerHTML);
-    // },
     initClipboard () {
       const clipboard = new Clipboard('.copy-btn');
       clipboard.on('success', () => {

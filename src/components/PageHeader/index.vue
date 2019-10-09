@@ -1,6 +1,6 @@
 <template>
   <div class="page-header">
-    <div class="title">MARKDOWN TO WECHAT</div>
+    <div class="title">https://md2wx.com</div>
     <el-menu
       :default-active="active"
       class="header-menu"
@@ -9,7 +9,6 @@
       background-color="#373d49"
       text-color="#fff"
       active-text-color="#ffd04b">
-      <!-- <el-menu-item index="-1">复制</el-menu-item> -->
       <el-submenu index="2" disabled>
         <template slot="title">导出</template>
         <el-menu-item index="2-1">导出 PDF</el-menu-item>

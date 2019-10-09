@@ -1170,6 +1170,7 @@ pre[class*="language-"] {
         background-color: #f9f2f4; */
 }
 .markdown-body[data-v-5b685826] p {
+    /* word-break: break-all; */
     color: #4a4a4a;
 }
 .doc-title-wrapper[data-v-5b685826] {
