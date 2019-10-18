@@ -9,7 +9,9 @@
           </div>
           <div class="editor-body">
             <el-input
-              ref="input"
+              @change="handleFocus"
+              @click.native="handleFocus"
+              ref="editorHook"
               class="markdown-input"
               type="textarea"
               placeholder="请输入内容"
@@ -199,6 +201,7 @@ export default {
   name: 'Home',
   data () {
     return {
+      cursorPosition: 0,
       picIndex: 0,
       docTitle: '',
       markdownInputValue: '',
@@ -259,6 +262,10 @@ export default {
     this.initClipboard();
   },
   methods: {
+    handleFocus () {
+      const textareaEl = this.$refs.editorHook.$el.firstElementChild;
+      this.cursorPosition = textareaEl.selectionStart;
+    },
     initCopy () {
       const self = this;
       document.addEventListener('paste', function (event) {
@@ -272,7 +279,30 @@ export default {
               var reader = new FileReader()
               reader.onload = function(event) {
                 self.picIndex ++;
-                console.log(`%c [pic${self.picIndex}]:${event.target.result}`, "color: skyblue;");
+
+                const editorEl = self.$refs.editorHook.$el.firstElementChild;
+                const picId = `[pic${self.picIndex}]`;
+                const picContent = event.target.result;
+                const mdImage = `![]${picId}\n`;
+                let position = self.cursorPosition;
+
+                let s = self.markdownInputValue;
+
+                const left = s.substr(0, position);
+                const right = s.substr(position);
+
+                self.markdownInputValue = `${left}${mdImage}${right}`;
+                // const retArr = s.split('');
+                // retArr.splice(position, 0, mdImage);
+                // s = retArr.join('');
+
+
+                self.cursorPosition += mdImage.length;
+
+                // s += `![]${picId}`
+                self.markdownInputValue += `\n\n${picId}:${picContent}\n\n`
+                
+                console.log(`%c ${picId}:${picContent}`, "color: skyblue;");
               }
               reader.readAsDataURL(file);
               break;
