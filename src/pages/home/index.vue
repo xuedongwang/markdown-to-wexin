@@ -154,7 +154,7 @@ import marked from 'marked';
 import Clipboard from 'clipboard';
 import Prism from '@/libs/prismjs';
 import '@/libs/github-markdown-css';
-import '@/libs/prismjs/themes/prism-solarizedlight.css';
+import '@/libs/prismjs/themes/prism-okaidia.css';
 
 const defaultStyleConfig = {
   title: {
@@ -175,6 +175,21 @@ const defaultStyleConfig = {
   codeStyle: 'solarizedlight'
 };
 
+const renderer = new marked.Renderer();
+
+renderer.code = function(code, infostring, escaped) {
+  const lang = (infostring || '').match(/\S*/)[0] || 'javascript';
+  if (this.options.highlight) {
+    const out = this.options.highlight(code, lang);
+    if (out != null && out !== code) {
+      escaped = true;
+      code = out;
+    }
+  }
+  
+  return `<pre class="${this.options.langPrefix + escape(lang, true)}"><code class="${this.options.langPrefix + escape(lang, true)}">${(escaped ? code : escape(code, true))}</code></pre>\n`;
+};
+
 marked.setOptions({
   baseUrl: null,
   breaks: true,
@@ -187,7 +202,7 @@ marked.setOptions({
   langPrefix: 'language-',
   mangle: true,
   pedantic: false,
-  renderer: new marked.Renderer(),
+  renderer,
   sanitize: false,
   sanitizer: null,
   silent: false,
@@ -278,31 +293,14 @@ export default {
               file = items[i].getAsFile();
               var reader = new FileReader()
               reader.onload = function(event) {
-                self.picIndex ++;
 
-                const editorEl = self.$refs.editorHook.$el.firstElementChild;
-                const picId = `[pic${self.picIndex}]`;
                 const picContent = event.target.result;
-                const mdImage = `![]${picId}\n`;
-                let position = self.cursorPosition;
 
-                let s = self.markdownInputValue;
+                self.picIndex ++;
+                const picId = `[pic${self.picIndex}]`;
 
-                const left = s.substr(0, position);
-                const right = s.substr(position);
+                console.log(`![]${picId}\n\n${picId}:${picContent}`)
 
-                self.markdownInputValue = `${left}${mdImage}${right}`;
-                // const retArr = s.split('');
-                // retArr.splice(position, 0, mdImage);
-                // s = retArr.join('');
-
-
-                self.cursorPosition += mdImage.length;
-
-                // s += `![]${picId}`
-                self.markdownInputValue += `\n\n${picId}:${picContent}\n\n`
-                
-                console.log(`%c ${picId}:${picContent}`, "color: skyblue;");
               }
               reader.readAsDataURL(file);
               break;
@@ -441,7 +439,7 @@ export default {
   /* customer style */
   & /deep/ {
     p {
-      font-size: 15px;
+      font-size: 16px;
     }
     pre {
       font-size: 14px;
@@ -462,9 +460,11 @@ export default {
         background-color: #f9f2f4; */
       }
     }
-    p {
+    p,
+    li,
+    ul {
       /* word-break: break-all; */
-      color: #4a4a4a;
+      color: #333;
     }
   }
 }
