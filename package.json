@@ -20,7 +20,7 @@
     "element-ui": "^2.4.11",
     "github-markdown-css": "^3.0.1",
     "juice": "^5.2.0",
-    "marked": "^0.6.2",
+    "marked": "^0.7.0",
     "muya": "^0.1.2",
     "normalize.css": "^8.0.1",
     "prismjs": "^1.16.0",
